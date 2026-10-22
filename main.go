@@ -15,13 +15,32 @@ type ExistingVTResForHash struct {
 		Id         string `json:"id"`
 		Type       string `json:"type"`
 		Attributes struct {
-			LastAnalysisDate int64  `json:"last_analysis_date"`
-			MeaningFulName   string `json:"meaningful_name"`
+			LastAnalysisDate  int64  `json:"last_analysis_date"`
+			MeaningFulName    string `json:"meaningful_name"`
+			LastAnalysisStats struct {
+				Malicious       int32 `json:"malicious"`
+				Suspicious      int32 `json:"suspicious"`
+				Undetected      int32 `json:"undetected"`
+				Harmless        int32 `json:"harmless"`
+				Timeout         int32 `json:"Timeout"`
+				Failure         int32 `json:"failure"`
+				TypeUnsupported int32 `json:"type-unsupported"`
+			} `json:"last_analysis_stats"`
+			LastAnalysisResults map[string]EngineResult `json:"last_analysis_results"`
 		} `json:"attributes"`
 		Links struct {
 			Self string `json:"self"`
 		} `json:"links"`
 	} `json:"data"`
+}
+
+type EngineResult struct {
+	Method        string  `json:"method"`
+	EngineName    string  `json:"engine_name"`
+	EngineVersion string  `json:"engine_version"`
+	EngineUpdate  string  `json:"engine_update"`
+	Category      string  `json:"category"`
+	Result        *string `json:"result"`
 }
 
 func main() {
@@ -94,6 +113,6 @@ func main() {
 
 	}
 
-	fmt.Println(t.Data.Links.Self)
+	fmt.Println(t)
 
 }
